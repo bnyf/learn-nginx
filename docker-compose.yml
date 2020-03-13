@@ -8,5 +8,5 @@ services:
      - 8443:443
      - 8080:80
     volumes:
-     - ${HOMEDIR}:/root/workdir
+     - ${HOMEDIR}/workdir:/root/workdir
     entrypoint: "bash /root/daemon.sh"
