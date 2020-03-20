@@ -190,6 +190,7 @@ static ngx_int_t myupstream_upstream_create_request(ngx_http_request_t *r) {
     r->upstream->header_sent = 0;
     // header_hash不可以为0
     r->header_hash = 1;
+    
     return NGX_OK;
 }
 
