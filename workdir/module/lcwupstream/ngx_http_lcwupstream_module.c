@@ -203,7 +203,7 @@ static ngx_int_t lcw_upstream_create_request(ngx_http_request_t *r)//
     //u_char *data;
     //}ngx_str_t;
     //这里貌似要和搜索请求相对应，不是所有的搜索引擎请求都是search?q=
-    static ngx_str_t backendQueryLine = ngx_string("GET /search?q=%V HTTP/1.1\r\nHost: s.taobao.com\r\nConnection: close\r\n\r\n");
+    static ngx_str_t backendQueryLine = ngx_string("GET / HTTP/1.1\r\nHost: cn.bing.com\r\nConnection: close\r\n\r\n");
     ngx_int_t queryLineLen = backendQueryLine.len + r->args.len - 2;
     //必须由内存池中申请内存，这有两点好处：在网络情况不佳的情况下，向上游
     //服务器发送请求时，可能需要epoll多次调度send发送才能完成，
@@ -498,7 +498,7 @@ static ngx_int_t ngx_http_lcwupstream_handler(ngx_http_request_t *r)
     //这里的上游服务器就是s.taobao.com淘宝搜索
     static struct sockaddr_in backendSockAddr;
     //得到给定主机名的包含主机名字和地址信息的hostent结构指针  
-    struct hostent *pHost = gethostbyname((char*) "s.taobao.com");
+    struct hostent *pHost = gethostbyname((char*) "cn.bing.com");
     if (pHost == NULL)
     {
         ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
@@ -527,6 +527,7 @@ static ngx_int_t ngx_http_lcwupstream_handler(ngx_http_request_t *r)
     //}ngx_http_upstream_resolved_t；
     u->resolved->sockaddr = (struct sockaddr *)&backendSockAddr;
     u->resolved->socklen = sizeof(struct sockaddr_in);
+    u->resolved->port = htons((in_port_t)80);
     u->resolved->naddrs = 1;
     //ngx_http_upstream_t有8个回调方法
     //设置三个必须实现的回调方法
