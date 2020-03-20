@@ -3,15 +3,16 @@
 #include <ngx_http.h>
 
 static ngx_int_t ngx_http_mymodule_handler(ngx_http_request_t *r);
-static char * ngx_http_mytest(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
+static char * ngx_http_mymodule(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 
 /* commands 数组 */
 static ngx_command_t ngx_http_mymodule_commands[] = {
 	{
 		ngx_string("mymodule"),              /* 配置项名称 */
 		NGX_HTTP_LOC_CONF | NGX_CONF_NOARGS, /* 该配置项可出现在http块中的location块内 | 该配置项无参数 */
+		// NGX_HTTP_LOC_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_NOARGS, /* 该配置项可出现在location块内 | server块内 | 该配置项无参数 */
 		ngx_http_mymodule,                   /* set回调函数, 当出现了mymodule配置项后，ngx_http_mymodule函数被调用*/
-		NGX_HTTP_LOC_CONF_OFFSET,            /* 指明配置项的值存储的位置 */
+		0,                                   /* 指明配置项的值存储的位置 */
 		0,                                   /* 使用预设方式处理配置项时有用，本模块使用的是自定义模块 */
 		NULL                                 /* 配置项处理后的回调函数，本模块暂时用不到 */
 	},
